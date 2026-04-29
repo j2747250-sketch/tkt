@@ -1,0 +1,354 @@
+import { useState } from "react";
+
+const flights = [
+  {
+    id: 1,
+    flight: "EK 503",
+    date: "Mon, 11 May 2026",
+    from: "Mumbai",
+    fromCode: "BOM",
+    to: "Dubai",
+    toCode: "DXB",
+    dep: "19:30",
+    arr: "21:00",
+    duration: "3h 00m",
+    terminal: "T2 → T3",
+    aircraft: "Airbus A350-900",
+    class: "Economy (L)",
+    baggage: "25 kg",
+    meal: "✓ Included",
+    status: "Confirmed",
+    color: "#C9A84C",
+  },
+  {
+    id: 2,
+    type: "layover",
+    location: "Dubai (DXB)",
+    duration: "6h 25m",
+    note: "Terminal 3 — Late night connection",
+  },
+  {
+    id: 3,
+    flight: "EK 255",
+    date: "Tue, 12 May 2026",
+    from: "Dubai",
+    fromCode: "DXB",
+    to: "Barcelona",
+    toCode: "BCN",
+    dep: "03:25",
+    arr: "08:35",
+    duration: "7h 10m",
+    terminal: "T3 → T1",
+    aircraft: "Boeing 777-200LR",
+    class: "Economy (L)",
+    baggage: "25 kg",
+    meal: "✓ Included",
+    status: "Confirmed",
+    color: "#C9A84C",
+  },
+  {
+    id: 4,
+    type: "stay",
+    location: "Spain",
+    duration: "~5 Days",
+    note: "Barcelona → Madrid",
+  },
+  {
+    id: 5,
+    flight: "EK 142",
+    date: "Sun, 17 May 2026",
+    from: "Madrid",
+    fromCode: "MAD",
+    to: "Dubai",
+    toCode: "DXB",
+    dep: "15:25",
+    arr: "00:35+1",
+    duration: "7h 10m",
+    terminal: "T4S → T3",
+    aircraft: "Airbus A380-800",
+    class: "Economy (L)",
+    baggage: "25 kg",
+    meal: "✓ Included",
+    status: "Confirmed",
+    color: "#C9A84C",
+  },
+  {
+    id: 6,
+    type: "layover",
+    location: "Dubai (DXB)",
+    duration: "2h 55m",
+    note: "Terminal 3 — Short overnight connection",
+  },
+  {
+    id: 7,
+    flight: "EK 504",
+    date: "Mon, 18 May 2026",
+    from: "Dubai",
+    fromCode: "DXB",
+    to: "Mumbai",
+    toCode: "BOM",
+    dep: "03:30",
+    arr: "08:15",
+    duration: "3h 15m",
+    terminal: "T3 → T2",
+    aircraft: "Boeing 777-300ER",
+    class: "Economy (L)",
+    baggage: "25 kg",
+    meal: "✓ Included",
+    status: "Confirmed",
+    color: "#C9A84C",
+  },
+];
+
+export default function Itinerary() {
+  const [expanded, setExpanded] = useState(null);
+
+  const toggle = (id) => setExpanded(expanded === id ? null : id);
+
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: "linear-gradient(160deg, #0a0f1e 0%, #0d1a2d 60%, #0a1520 100%)",
+      fontFamily: "'Georgia', serif",
+      padding: "32px 16px",
+      color: "#e8dfc8",
+    }}>
+      {/* Header */}
+      <div style={{ textAlign: "center", marginBottom: 40 }}>
+        <div style={{ fontSize: 11, letterSpacing: 6, color: "#C9A84C", textTransform: "uppercase", marginBottom: 8 }}>
+          Emirates · Booking 8ABRQX
+        </div>
+        <h1 style={{
+          fontSize: "clamp(24px, 5vw, 38px)",
+          fontWeight: 400,
+          margin: 0,
+          color: "#f5edd8",
+          letterSpacing: 1,
+        }}>
+          Mumbai → Barcelona → Mumbai
+        </h1>
+        <div style={{ fontSize: 12, color: "#7a8fa8", marginTop: 8, letterSpacing: 2 }}>
+          11 MAY — 18 MAY 2026
+        </div>
+        <div style={{
+          width: 60, height: 1,
+          background: "linear-gradient(90deg, transparent, #C9A84C, transparent)",
+          margin: "20px auto 0",
+        }} />
+      </div>
+
+      {/* Timeline */}
+      <div style={{ maxWidth: 620, margin: "0 auto", position: "relative" }}>
+        {/* Vertical line */}
+        <div style={{
+          position: "absolute",
+          left: 28,
+          top: 0,
+          bottom: 0,
+          width: 1,
+          background: "linear-gradient(180deg, #C9A84C33, #C9A84C55, #C9A84C33)",
+          zIndex: 0,
+        }} />
+
+        {flights.map((item) => {
+          if (item.type === "layover" || item.type === "stay") {
+            const isStay = item.type === "stay";
+            return (
+              <div key={item.id} style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 20,
+                padding: "16px 0",
+                position: "relative",
+                zIndex: 1,
+              }}>
+                {/* Icon */}
+                <div style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: "50%",
+                  background: isStay
+                    ? "linear-gradient(135deg, #1a3a2a, #0f2a1a)"
+                    : "linear-gradient(135deg, #1a2a3a, #0f1a2a)",
+                  border: `1px solid ${isStay ? "#3a7a5a44" : "#C9A84C44"}`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 20,
+                  flexShrink: 0,
+                }}>
+                  {isStay ? "🇪🇸" : "⏱"}
+                </div>
+
+                <div style={{
+                  flex: 1,
+                  background: isStay
+                    ? "linear-gradient(135deg, #0f1f170a, #1a3a2a18)"
+                    : "#ffffff06",
+                  border: `1px solid ${isStay ? "#3a7a5a30" : "#C9A84C22"}`,
+                  borderRadius: 10,
+                  padding: "12px 18px",
+                }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div>
+                      <div style={{
+                        fontSize: 10,
+                        letterSpacing: 4,
+                        color: isStay ? "#5aaa7a" : "#C9A84C",
+                        textTransform: "uppercase",
+                        marginBottom: 4,
+                      }}>
+                        {isStay ? "Spain Stay" : "Layover"}
+                      </div>
+                      <div style={{ fontSize: 15, color: "#d4c9a8" }}>{item.location}</div>
+                      <div style={{ fontSize: 11, color: "#556677", marginTop: 4 }}>{item.note}</div>
+                    </div>
+                    <div style={{
+                      fontSize: 20,
+                      fontWeight: 300,
+                      color: isStay ? "#5aaa7a" : "#C9A84C",
+                      letterSpacing: -0.5,
+                    }}>
+                      {item.duration}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          const isOpen = expanded === item.id;
+          return (
+            <div key={item.id} style={{ display: "flex", gap: 20, padding: "8px 0", position: "relative", zIndex: 1 }}>
+              {/* Circle dot */}
+              <div style={{
+                width: 56,
+                height: 56,
+                borderRadius: "50%",
+                background: "linear-gradient(135deg, #1e2d40, #0f1a2a)",
+                border: "1px solid #C9A84C66",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+                fontSize: 11,
+                color: "#C9A84C",
+                fontWeight: 600,
+                letterSpacing: 0.5,
+                cursor: "pointer",
+                boxShadow: isOpen ? "0 0 20px #C9A84C33" : "none",
+                transition: "box-shadow 0.3s ease",
+              }}
+                onClick={() => toggle(item.id)}
+              >
+                ✈
+              </div>
+
+              {/* Card */}
+              <div style={{
+                flex: 1,
+                background: isOpen
+                  ? "linear-gradient(135deg, #12202f, #0d1925)"
+                  : "#ffffff06",
+                border: `1px solid ${isOpen ? "#C9A84C55" : "#C9A84C22"}`,
+                borderRadius: 12,
+                overflow: "hidden",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                marginBottom: 8,
+              }}
+                onClick={() => toggle(item.id)}
+              >
+                {/* Main row */}
+                <div style={{ padding: "16px 20px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+                    <div>
+                      <span style={{
+                        fontSize: 10,
+                        letterSpacing: 4,
+                        color: "#C9A84C",
+                        textTransform: "uppercase",
+                      }}>
+                        {item.flight}
+                      </span>
+                      <div style={{ fontSize: 11, color: "#55667788", marginTop: 2 }}>{item.date}</div>
+                    </div>
+                    <div style={{ fontSize: 11, color: "#5a8060", letterSpacing: 1 }}>● {item.status}</div>
+                  </div>
+
+                  {/* Route */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <div style={{ textAlign: "left" }}>
+                      <div style={{ fontSize: 26, fontWeight: 300, color: "#f0e8d0", lineHeight: 1 }}>{item.dep}</div>
+                      <div style={{ fontSize: 12, color: "#8899aa", marginTop: 4 }}>{item.fromCode}</div>
+                      <div style={{ fontSize: 10, color: "#556677" }}>{item.from}</div>
+                    </div>
+
+                    <div style={{ flex: 1, textAlign: "center" }}>
+                      <div style={{ fontSize: 10, color: "#7a8899", marginBottom: 4 }}>{item.duration}</div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                        <div style={{ flex: 1, height: 1, background: "linear-gradient(90deg, #C9A84C44, #C9A84C88)" }} />
+                        <span style={{ color: "#C9A84C", fontSize: 12 }}>›</span>
+                        <div style={{ flex: 1, height: 1, background: "linear-gradient(90deg, #C9A84C88, #C9A84C44)" }} />
+                      </div>
+                      <div style={{ fontSize: 9, color: "#445566", marginTop: 4, letterSpacing: 2 }}>NON STOP</div>
+                    </div>
+
+                    <div style={{ textAlign: "right" }}>
+                      <div style={{ fontSize: 26, fontWeight: 300, color: "#f0e8d0", lineHeight: 1 }}>{item.arr}</div>
+                      <div style={{ fontSize: 12, color: "#8899aa", marginTop: 4 }}>{item.toCode}</div>
+                      <div style={{ fontSize: 10, color: "#556677" }}>{item.to}</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Expanded details */}
+                {isOpen && (
+                  <div style={{
+                    borderTop: "1px solid #C9A84C22",
+                    padding: "14px 20px",
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "10px 20px",
+                  }}>
+                    {[
+                      ["Terminal", item.terminal],
+                      ["Aircraft", item.aircraft],
+                      ["Class", item.class],
+                      ["Baggage", item.baggage],
+                      ["Meal", item.meal],
+                      ["E-Ticket", "EK 176-5896086312"],
+                    ].map(([label, val]) => (
+                      <div key={label}>
+                        <div style={{ fontSize: 9, letterSpacing: 3, color: "#667788", textTransform: "uppercase" }}>{label}</div>
+                        <div style={{ fontSize: 13, color: "#c8bfa0", marginTop: 2 }}>{val}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Tap hint */}
+                <div style={{
+                  textAlign: "center",
+                  padding: "6px",
+                  fontSize: 9,
+                  color: "#33445555",
+                  letterSpacing: 2,
+                }}>
+                  {isOpen ? "TAP TO COLLAPSE" : "TAP FOR DETAILS"}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Footer */}
+      <div style={{ textAlign: "center", marginTop: 32 }}>
+        <div style={{ fontSize: 10, color: "#334455AA" }}>
+          Total CO₂ emissions · 1,034.89 kg
+        </div>
+      </div>
+    </div>
+  );
+}
